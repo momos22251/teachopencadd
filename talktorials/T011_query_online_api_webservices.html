@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="T011 · Querying online API webservices" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://projects.volkamerlab.org/teachopencadd/talktorials/T011_query_online_api_webservices.html" />
+<meta property="og:site_name" content="TeachOpenCADD" />
+<meta property="og:description" content="Note: This talktorial is a part of TeachOpenCADD, a platform that aims to teach domain-specific skills and to provide pipeline templates as starting points for research projects. Authors: Jaime Rodríguez-Guerra, 2020-2021, Volkamer lab, Charité, Dominique Sydow, 2021, Volkamer lab, Charité, David..." />
+<meta property="og:image" content="https://raw.githubusercontent.com/volkamerlab/teachopencadd/master/docs/_static/images/TeachOpenCADD_topics.png" />
+<meta property="og:image:alt" content="TeachOpenCADD" />
+<meta name="description" content="Note: This talktorial is a part of TeachOpenCADD, a platform that aims to teach domain-specific skills and to provide pipeline templates as starting points for research projects. Authors: Jaime Rodríguez-Guerra, 2020-2021, Volkamer lab, Charité, Dominique Sydow, 2021, Volkamer lab, Charité, David..." />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="lang:clipboard.copy" content="Copy to clipboard">
+  <meta name="lang:clipboard.copied" content="Copied to clipboard">
+  <meta name="lang:search.language" content="en">
+  <meta name="lang:search.pipeline.stopwords" content="True">
+  <meta name="lang:search.pipeline.trimmer" content="True">
+  <meta name="lang:search.result.none" content="No matching documents">
+  <meta name="lang:search.result.one" content="1 matching document">
+  <meta name="lang:search.result.other" content="# matching documents">
+  <meta name="lang:search.tokenizer" content="[\s\-]+">
+
+  
+    <link href="https://fonts.gstatic.com/" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto:300,400,400i,700&display=fallback" rel="stylesheet">
+
+    <style>
+      body,
+      input {
+        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif
+      }
+
+      code,
+      kbd,
+      pre {
+        font-family: "Roboto Mono", "Courier New", Courier, monospace
+      }
+    </style>
+  
+
+  <link rel="stylesheet" href="../_static/stylesheets/application.css"/>
+  <link rel="stylesheet" href="../_static/stylesheets/application-palette.css"/>
+  <link rel="stylesheet" href="../_static/stylesheets/application-fixes.css"/>
+  
+  <link rel="stylesheet" href="../_static/fonts/material-icons.css"/>
+  
+  <meta name="theme-color" content="#2196f3">
+  <script src="../_static/javascripts/modernizr.js"></script>
+  
+    <script async src="../_static/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+            "palette": {
+            "popup": {
+                "background": "#f0f0f0",
+                "text": "#999"
+            },
+            "button": {
+                "text": "#fff",
+                "background": "#009688"
+            }
+            },
+            "theme": "classic"
+        })});
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q6ZE82CNZB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-Q6ZE82CNZB');
+    </script>
+  
+    <link rel="apple-touch-icon" href="../_static/images/apple-icon-152x152.png"/>
+  
+  
+    <title>T011 · Querying online API webservices &#8212; TeachOpenCADD 0.0.post2486 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css?v=79c92029" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=897d968c" />
+    <script src="../_static/documentation_options.js?v=171d5dec"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="T012 · Data acquisition from KLIFS" href="T012_query_klifs.html" />
+    <link rel="prev" title="T010 · Binding site similarity and off-target prediction" href="T010_binding_site_comparison.html" />
+  
+    <link rel="apple-touch-icon" href="../_static/images/apple-icon-152x152.png"/>
+  
+   
+
+  </head>
+  <body dir=ltr
+        data-md-color-primary=teal data-md-color-accent=cyan>
+  
+  <svg class="md-svg">
+    <defs data-children-count="0">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+      
+    </defs>
+  </svg>
+  
+  <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
+  <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
+  <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+  <a href="#talktorials/T011_query_online_api_webservices" tabindex="1" class="md-skip"> Skip to content </a>
+  <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex navheader">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../index.html" title="TeachOpenCADD 0.0.post2486 documentation"
+           class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">school</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          <span class="md-header-nav__topic">TeachOpenCADD</span>
+          <span class="md-header-nav__topic"> T011 · Querying online API webservices </span>
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+        
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" action="../search.html" method="get" name="search">
+      <input type="text" class="md-search__input" name="q" placeholder=""Search""
+             autocapitalize="off" autocomplete="off" spellcheck="false"
+             data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            <a href="https://github.com/volkamerlab/teachopencadd/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    TeachOpenCADD
+  </div>
+</a>
+          </div>
+        </div>
+      
+      
+    </div>
+  </nav>
+</header>
+
+  
+  <div class="md-container">
+    
+    
+    
+  <nav class="md-tabs" data-md-component="tabs">
+    <div class="md-tabs__inner md-grid">
+      <ul class="md-tabs__list">
+            
+            <li class="md-tabs__item"><a href="../talktorials.html" class="md-tabs__link">Our talktorials</a></li>
+            
+            <li class="md-tabs__item"><a href="../installing.html" class="md-tabs__link">Run locally</a></li>
+            
+            <li class="md-tabs__item"><a href="../contribute.html" class="md-tabs__link">Development</a></li>
+            
+            <li class="md-tabs__item"><a href="../contact.html" class="md-tabs__link">Contact</a></li>
+            
+            <li class="md-tabs__item"><a href="../citation.html" class="md-tabs__link">Citation</a></li>
+          <li class="md-tabs__item"><a href="../all_talktorials.html" class="md-tabs__link">Complete list of talktorials</a></li>
+      </ul>
+    </div>
+  </nav>
+    <main class="md-main">
+      <div class="md-main__inner md-grid" data-md-component="container">
+        
+          <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../index.html" title="TeachOpenCADD 0.0.post2486 documentation" class="md-nav__button md-logo">
+      
+        <i class="md-icon">school</i>
+      
+    </a>
+    <a href="../index.html"
+       title="TeachOpenCADD 0.0.post2486 documentation">TeachOpenCADD</a>
+  </label>
+    <div class="md-nav__source">
+      <a href="https://github.com/volkamerlab/teachopencadd/" title="Go to repository" class="md-source" data-md-source="github">
+
+    <div class="md-source__icon">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="28" height="28">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    TeachOpenCADD
+  </div>
+</a>
+    </div>
+  
+  
+
+  
+  <ul class="md-nav__list">
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Our talktorials</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../all_talktorials.html" class="md-nav__link">Complete list of talktorials</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html" class="md-nav__link">Talktorials by collection</a>
+      <ul class="md-nav__list"> 
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#edition-2019-jcim" class="md-nav__link">Edition 2019 - JCIM</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#edition-2021" class="md-nav__link">Edition 2021</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#ligand-based-cheminformatics" class="md-nav__link">Ligand-based cheminformatics</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#structural-biology" class="md-nav__link">Structural biology</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#online-apis-servers" class="md-nav__link">Online APIs/servers</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#kinase-similarity" class="md-nav__link">Kinase similarity</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../talktorials.html#deep-learning" class="md-nav__link">Deep learning</a>
+      
+    
+    </li></ul>
+    
+    </li>
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">User guide</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../user_guide.html" class="md-nav__link">User guide</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">Development</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../contribute.html" class="md-nav__link">For contributors</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">About TeachOpenCADD</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../contact.html" class="md-nav__link">Contact</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../acknowledgments.html" class="md-nav__link">Acknowledgments</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../citation.html" class="md-nav__link">Citation</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../license.html" class="md-nav__link">License</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../funding.html" class="md-nav__link">Funding</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+      <span class="md-nav__link caption"><span class="caption-text">External resources</span></span>
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../external_dependencies.html" class="md-nav__link">Packages and webservers used in TeachOpenCADD</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="../external_tutorials_collections.html" class="md-nav__link">External tutorials and collections</a>
+      
+    
+    </li>
+  </ul>
+  
+
+</nav>
+              </div>
+            </div>
+          </div>
+          <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+            <div class="md-sidebar__scrollwrap">
+              <div class="md-sidebar__inner">
+                
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#talktorials-t011-query-online-api-webservices--page-root" class="md-nav__link">T011 · Querying online API webservices</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#Aim-of-this-talktorial" class="md-nav__link">Aim of this talktorial</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#Contents-in-Theory" class="md-nav__link">Contents in Theory</a>
+        </li>
+        <li class="md-nav__item"><a href="#Contents-in-Practical" class="md-nav__link">Contents in Practical</a>
+        </li>
+        <li class="md-nav__item"><a href="#References" class="md-nav__link">References</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#Theory" class="md-nav__link">Theory</a>
+        </li>
+        <li class="md-nav__item"><a href="#Practical" class="md-nav__link">Practical</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#Downloading-static-files" class="md-nav__link">Downloading static files</a>
+        </li>
+        <li class="md-nav__item"><a href="#Accessing-dynamically-generated-content" class="md-nav__link">Accessing dynamically generated content</a>
+        </li>
+        <li class="md-nav__item"><a href="#Programmatic-interfaces" class="md-nav__link">Programmatic interfaces</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#HTTP-based-RESTful-APIs" class="md-nav__link">HTTP-based RESTful APIs</a>
+        </li>
+        <li class="md-nav__item"><a href="#Generating-a-client-for-any-API" class="md-nav__link">Generating a client for any API</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#Document-parsing" class="md-nav__link">Document parsing</a>
+        </li>
+        <li class="md-nav__item"><a href="#Browser-remote-control" class="md-nav__link">Browser remote control</a>
+        </li></ul>
+            </nav>
+        </li>
+        <li class="md-nav__item"><a href="#Discussion" class="md-nav__link">Discussion</a>
+        </li>
+        <li class="md-nav__item"><a href="#Quiz" class="md-nav__link">Quiz</a>
+        </li></ul>
+            </nav>
+        </li>
+    
+<li class="md-nav__item"><a class="md-nav__extra_link" href="../_sources/talktorials/T011_query_online_api_webservices.nblink.txt">Show Source</a> </li>
+
+<li id="searchbox" class="md-nav__item"></li>
+
+  </ul>
+</nav>
+              </div>
+            </div>
+          </div>
+        
+        <div class="md-content">
+          <article class="md-content__inner md-typeset" role="main">
+            
+  <section id="T011-·-Querying-online-API-webservices">
+<h1 id="talktorials-t011-query-online-api-webservices--page-root">T011 · Querying online API webservices<a class="headerlink" href="#talktorials-t011-query-online-api-webservices--page-root" title="Link to this heading">¶</a></h1>
+<p><strong>Note:</strong> This talktorial is a part of TeachOpenCADD, a platform that aims to teach domain-specific skills and to provide pipeline templates as starting points for research projects.</p>
+<p>Authors:</p>
+<ul class="simple">
+<li><p>Jaime Rodríguez-Guerra, 2020-2021, <a class="reference external" href="https://volkamerlab.org/">Volkamer lab, Charité</a></p></li>
+<li><p>Dominique Sydow, 2021, <a class="reference external" href="https://volkamerlab.org/">Volkamer lab, Charité</a></p></li>
+<li><p>David Schaller, 2021, <a class="reference external" href="https://volkamerlab.org/">Volkamer lab, Charité</a></p></li>
+</ul>
+<section id="Aim-of-this-talktorial">
+<h2 id="Aim-of-this-talktorial">Aim of this talktorial<a class="headerlink" href="#Aim-of-this-talktorial" title="Link to this heading">¶</a></h2>
+<p>In this notebook, you will learn how to programmatically use online web-services from Python, in the context of drug design. By the end of this talktorial, you will be familiar with REST services and web scraping.</p>
+<section id="Contents-in-Theory">
+<h3 id="Contents-in-Theory">Contents in Theory<a class="headerlink" href="#Contents-in-Theory" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Data access from a server-side perspective</p></li>
+</ul>
+</section>
+<section id="Contents-in-Practical">
+<h3 id="Contents-in-Practical">Contents in Practical<a class="headerlink" href="#Contents-in-Practical" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Downloading static files</p></li>
+<li><p>Accessing dynamically generated content</p></li>
+<li><p>Programmatic interfaces</p></li>
+<li><p>Document parsing</p></li>
+<li><p>Browser remote control</p></li>
+</ul>
+</section>
+<section id="References">
+<h3 id="References">References<a class="headerlink" href="#References" title="Link to this heading">¶</a></h3>
+<p>This guide is very practical and omits some technical definitions for the sake of clarity. However, you should also handle some basic terminology to fully understand what is going on behind the scenes.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Client%E2%80%93server_model">Client-server model</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Web_API">Web API</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Query_string">Query strings</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Swagger_(software)">Swagger / OpenAPI</a></p></li>
+<li><p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview">HTTP overview</a></p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
+<span class="k">if</span> <span class="s2">"google.colab"</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+    <span class="o">%</span><span class="k">pip</span> install teachopencadd --no-deps -q
+    <span class="o">!</span>teachopencadd<span class="w"> </span>-d<span class="w"> </span><span class="m">11</span>
+    <span class="o">%</span><span class="k">pip</span> uninstall teachopencadd -y -q
+    <span class="o">%</span><span class="k">pip</span> install -qr requirements.txt
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="Theory">
+<h2 id="Theory">Theory<a class="headerlink" href="#Theory" title="Link to this heading">¶</a></h2>
+<p>The internet is a collection of connected computers that exchange data. In a way, you essentially query machines (servers) with certain parameters to retrieve specific data. That data will be either:</p>
+<ul class="simple">
+<li><p><strong>A</strong>. Served straight away, since the server is simply a repository of files. E.g. you can <a class="reference external" href="ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/latest/">download the ChEMBL database dump</a> from their servers.</p></li>
+<li><p><strong>B</strong>. Retrieved from a database and formatted in a particular way. The result you see on your browser is either:</p>
+<ul>
+<li><p><strong>B1</strong>. Pre-processed on the server, e.g. the HTML page you see when you visit any <a class="reference external" href="https://en.wikipedia.org/wiki/Drug_design">article in Wikipedia</a>.</p></li>
+<li><p><strong>B2</strong>. Dynamically generated on the client (your browser) as you use the website, e.g. Twitter, Facebook, or any modern <em>web-app</em>.</p></li>
+</ul>
+</li>
+<li><p><strong>C</strong>. Computed through the execution of one or more programs on the server-side, e.g. estimating the protonation states of a protein-ligand complex using <a class="reference external" href="https://proteins.plus/help/tutorial">Protoss</a>.</p></li>
+</ul>
+<blockquote>
+<div><p>In a way, configuration <strong>C</strong> is a special type of <strong>B1</strong>. You are just replacing the type of task that runs on the server: database querying and HTML rendering <em>vs.</em> computations that process your query and return data formatted in a domain-specific way.</p>
+</div></blockquote>
+<p>Another way of categorizing online services is by the <em>format</em> of the returned data. Most pages you see on your browser are using HTML, usually focusing on presenting data in a human-readable way. However, some servers might structure that data in a way that is <em>machine</em>-readable. This data can be processed in a reliable way because it’s formatted using a consistent set of rules that can be easily encoded in a program. Such programs are usually called <em>parsers</em>. HTML can be labeled in such a way
+that data can be obtained reliably, but it is not designed with that purpose in mind. As a result, we will usually prefer using services that provide machine-readable formats, like JSON, CSV or XML.</p>
+<p>In practice, both ways of data presentation (should) coexist in harmony. Modern web architecture strives to separate data retrieval tasks from end-user presentation. One popular implementation consists of using a programmatic endpoint that returns machine-readable JSON data, which is then consumed by the user-facing web application. The latter renders HTML, either on the server -option <strong>B1</strong>-, or on the user’s browser -option <strong>B2</strong>. Unfortunately, unlike the user-facing application, the
+programmatic endpoint (API) is not guaranteed to be publicly available, and is sometimes restricted to internal usage on the server side.</p>
+<p>In the following sections, we will discuss how to make the most out of each type of online service using Python and some libraries!</p>
+</section>
+<section id="Practical">
+<h2 id="Practical">Practical<a class="headerlink" href="#Practical" title="Link to this heading">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">HERE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">_dh</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">DATA</span> <span class="o">=</span> <span class="n">HERE</span> <span class="o">/</span> <span class="s2">"data"</span>
+<span class="n">TMPDATA</span> <span class="o">=</span> <span class="n">DATA</span> <span class="o">/</span> <span class="s2">"_tmp"</span>  <span class="c1"># this dir is gitignored</span>
+<span class="n">TMPDATA</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Downloading-static-files">
+<h3 id="Downloading-static-files">Downloading static files<a class="headerlink" href="#Downloading-static-files" title="Link to this heading">¶</a></h3>
+<p>In this case, the web server is hosting files that you will download and consume right away. All you need to do is to <em>query</em> the server for the right address or <em>URL</em> (Universal Resource Location). You do this all the time when you browse the internet, and you can also do it with Python!</p>
+<p>For example, let’s get this <a class="reference external" href="https://github.com/openkinome/kinodata/blob/master/data/KinHubKinaseList.csv">kinase-related CSV dataset from GitHub</a>, which contains a list of kinases and their identifiers.</p>
+<blockquote>
+<div><p>Tip: Whenever you want to download a file hosted in GitHub, use the <code class="docutils literal notranslate"><span class="pre">Raw</span></code> button to obtain the downloadable URL!</p>
+<img alt="image.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUQAAABECAYAAAD5nUxyAAAMlklEQVR4Ae2d7WsU6xnG/WP2yxJYkOyHI36JCIJCECGkxSO0zUFo0gMGSxvknMaCUZBQqihHFjmNp0VjMQgaUg4qGMw5pCyY1hranMS8bExi1mQ3L7tJNi96lXtmnt3ZmGRfMrO7z+61MEzceXvmmvv+zfXcz8x6APxQASpABaiAocAB6kAFqAAVoAKmAgQiI4EKUAEqYClAIDIUqAAV0EKBDx8+ut7OA6GpWXCiBowBxoAOMTA5PYu3M+8xH110BY4HVhMb4EQNGAOMAV1iYHF5BTPhCN7OhBFbWXMUjAQibwi8ITIGtIyB6FIMk9NhxB2EIoHIZNAyGXRxM2ynu847uhgznKJTNpFAJBAJRMaA1jEwE553rKZIIDIZtE4GOjB3HZgO+kpNUQZanPgQiAQigcgY0D4GpJboxIdAZDJonww6uBi20V0nOz075wQPQSASiAQiY0D7GJBnKJ34EIhMBu2Tge7LXfelg74EIkFGkDEGGANWDGgNxLn5KEKTUxh5M4afht+U3zQygp84GRqMjI4i9HYKc5Eok5cAdy0GtATi4nIc4xOTmJyaxuLSMhLrG9jc+lB2k8CwHM8rn3OKr6wisrCIsfEJjIcmsRiLu5YUOnTt2EZ3uvfaAVFgKI4wurBgwWILG5vlOQkQy/Xc8jmvzS3zOs+GwxDHSCi6A4VKhq12QBRnaMKwPCFoBwWBuPM1FjAKFMUpVnLy8tydvyFoBUSpGUo3WTkFOzzK8W8CcWcgmtd6E6PjE6wpsp7o6E1RKyBOTE4ZNcNyhN9O50Qg7gXELcxHo5iYfOtoQtB1Oe+6dNJUKyBK7XAtsV4xdTUCcW8gxuIrRi1Rp4Sr5LbOR5fwxyt/ws9/2Zg2yXeyrBS00QqI8mjNTk6qXL8jEPcGolx30SifRJJfTP72b383ElQSMt9J9iH7yqcNbm6j4NPQdB6dXY9Lon03Ah1pILSDUZa5qUe2+yYQS3iEmkB0D4hX//zNrslpT9Rs/pZ9ZZtwhVhPYPj7P7Slnd+NwJ2it/Gi5Q4H/vPfZFukraKxLCuENpmOQSASiFq77nwdogKdJOd+pt+c/8pI6EyJVqjldhiK6xoaGcevGs8bbXz6vK/g0BFt/2VNCtKP/vE0+Z0sk2shy9R6Mi+UXtuPQyASiBUNxO0Jkeu/levJdTs31rfD0O64BIoCnS9/+1VBQfOo54lxXHXzyWUu27qhUaZ9EogEIoG4j0dXSgWIdhgq8ChHqGp3ha7TSW1Vjika5TLJNsWqy1YeEIPt8Hh9tsmPz063IPBjuOTA4EQNMXjVfq4+VNWcQfPdAUQSqfrczIMmeLxN6JxKfafLQNV+u8yZHEOm5aUARDsMBSYCQgVFNar7u6/bSmYkN5OmxVxesUBs/Es/+l70o+9xB5pP+eHxnsSN16UFBOeA2IyAnOuLbgTO16PK60Pd3VDyBkAg5v/sXbGBuB2GCiZ2KBYbhtL9lW67attuc3GFT5//kHG93bZ34vuKBeLloA1+oS587vWh4UFpuUTngNiOoCoNJAZx46gPnrNdmLG+IxD1BOJuMBQwiFMUl1hsGMqgirRD2pMJWKrNsk2mdd1aTiAKFP7XgVqvD809C5ZrWsVQTzsaTx0x3JSn+ggabvZjRrqZw/eMde3wfHXrODze4ymHmRjA5Wofam4NJl1YPl1QV4C4OYI7dT54LvYitgsQI8EONDecxEGjtHAYdRe7MLSkbiBhdJ41gRr8MYCGGj8MfW4PIpYIoefiGXO7Q2dw+Xn6DSbyugutPztslCuk6976YCTZhnz02c9ziKpLud/EKpZD1AGGoq0a0BGdMmmttMzGTWbaV77LKxaI9i5z4wkfqk534FU8lfQPv25B4PEgxuZCCN5qMsDY+FiAaTmsJFAEEH5UVdscpgFNP9JcqHJoOcwdB2JiFWPft6FmW3lgu0MM3vwClx/0Y2gqjKHHbTjm9aHmpoK7BcRqP2ov3MOzF91oPy0lBz9qT9Wj7lo3+p7dQ8sJHzzVbeizNI29vI5jXj/qrvViaCqE4N1W49+pm5DSPre5aJRP8OsMRF1gqK6LaJ0LENV2xZhXLBBTAytH0HB/BDHbIMMnbiXRj8vilq4OGI4veFVc0XWzGxp9gmZvC1ou+JOuK9LTAo+3Dc+SgM0tydXxnQOifWClHi3fp+qHcqztQFTHN+chdP7C3sVWQEzBTrlmz7luRCzgj93/woBk+0s59wU8POeDffnGprXf80+S26QfNzvNKg2IusFQoJbtzSfb9dwEZcUC0XBviTCeXToJT3UTOkPpCRgZ7sWdKy34vK4exw5ZQLGAGHveBo+3HneGt2D8fbYLQ/KdBcm+Kz549pnoAgfngKgGVfrx8HYLaqt9OHghBaJPgDg1gM7bbWisq0etdInlZpCsOaa6zKoGuTHVhQavD7Xf2X6/0RrNN13ygHlDSRvdtzRN7jdd/2zhWGwgSo1OEtnNJFX71hGG0vZsNRIdZV11vsWYVzYQxc0s9aK12p7wW9h4HTC6icekSxgcwcxcL1ptDnHDcIVmzTF4zW+CwICCQNLsUttrjNkm9/b1nAOibVBlcwume0s9ZpMGxLknaK6WEsJ1PHwhJYNB3NnJIdpBZgEx7Zx3AuKlXkTmFtKn6Oq+66z5JI56w0TekMj3PWb15kWhkvjbv97fcYBCDUZIOwSa+ejh5jaqNrjXs4WyTICYTdfazbYSiAKIu2eM7l3rczM5zUGSFDA25rrRaAfipuWSrnQgUKcGU8zBiubbHWiw3ON2wOX6b7eAOPRdfdpzh3Ygmt19X6r++cmo9O4OcXcgWtscDeDVXqWJHOqrSst8HaIU7hUUVVctn7lAqFCjoqq9drCUOgwFXuq98b10UqPRxX4vnECUJIz3my7xhJmwJiD8aLjVj2CwFzfOHTZHm60usySjAZWjx1FT3Y6gleTiFquq/fBI4ueR3CrJ1dw5IH7aZa76dffOj90E241zPXapC8HgADov1RsDRtl0mXcH4hYEtPL848GGAB4GB/EqaHbfA0aNMb/usuiULxB3cxkqMe2PiSjo/PDPl0VzX8pBKTcq/5YfbFDdzFJ0hkrjzq5HRjuzAaKsq7YrxpxAtMBlQtAaKbY9PlJV04TAv3vTBlUMYL0OoEZcY3K02aonen2osoFTwS2fuXNAtA2qHDqJRvUIUdq5K0e8ile3m/CZlBEOnUFrT3/yMRuzZpiPQzSBN/asHY0nzMdu5FGd2i8DCM7lD0M3gKi6pfZ3adU7ubKsGEkqx1RtkPeRVVddBxhK2xUQ99JP6U4g5vAeKX8PcX/wyAfKpb6Nkw5RXJf8fqCAxu645G/5TpYV6xk51e2UdigQCkTs7SwWrDMdV7lb1fa95sXSV51D5TlEB7qyhYKEEw6xUG0t1nGcBKIq/gv4tg+0KFDK9yp5CjmXV/EEiuIUBTCFPLYTx5Jyg7RfNN5tKmZJQp0jgVjCgCQQMztiJ4Eo9bm93ItyZip5OM//lcdS1Y5AJBD39dhLsZyhOq6TQCzVJGW7CgdeApFAJBBzqGMTToWDUzG01gqIwyOj/F/3ShjgyrUVah5fWcXwm1Ht6mnFSHQeMzuQawXE8YlJLCwua+1ocoEFa4h71xAj0QWMh0IEIh2uYzGgFRDfzb7H5NQ0gUiXiPWNTYxNhPAu/N6xZKCLys5FlbNOWgFxOb6K0bEJiDPIxWnpui4d4u4OcTb8HqPjE5CYKOcE5bkVFtJaAXFlbR3v56OQWmIlQJFA/BSI4gzfzYaN2qHEgsQEoVFYaJSz3loBUS5EbGUN4bmI4RSl+yw1xbXEelk6RgIxBcRYfAXz0QWjmyzOUGJAYqGck5PnVnjQawdEBcXIwhKm34UhAy3iGOW1vrKbRkaMHy8QMFb6JKPJMoAi11yuPWFYeFhUAqC1BKJcmJXVBBaX44guLBkJIknCqbw1kGst13xlLUFnyJFlV2JAWyDa71bx1QQ4lb8G9mvOv+kQ3YiBsgCiG8Jwn0w4xkDlxQCByK6HK10PwqTyYFIO15xAJBAJRMYAY8CKAQKRycBkYAwwBghEdmnKoYvDc2AcOxkDdIh0B3QHjAHGAB0i76xO3lm5L8ZTOcQAHSLdAd0BY4Ax4LRDFLJyogaMAcaAzjHwdjoMJz4H1jc2wIkaMAYYA7rGgIBQYO7E58CHjx/BiRowBhgDusaAo0B0gqrcBxWgAlSgmAo45hCLeRI8NhWgAlTACQUIRCdU5D6oABUoCwUIxLK4jDwJKkAFnFCAQHRCRe6DClCBslDAKSD+H/1v8rqSqafyAAAAAElFTkSuQmCC"/>
+</div></blockquote>
+<p>While Python provides a library to deal with HTTP queries (<code class="docutils literal notranslate"><span class="pre">urllib</span></code>), people often prefer using the 3rd-party <code class="docutils literal notranslate"><span class="pre">requests</span></code> because the usage is way simpler.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://raw.githubusercontent.com/openkinome/kinodata/master/data/KinHubKinaseList.csv"</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">response</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Response [200]&gt;
+</pre></div></div>
+</div>
+<p>When you use <code class="docutils literal notranslate"><span class="pre">requests.get(...)</span></code> you obtain a <code class="docutils literal notranslate"><span class="pre">Response</span></code> object. This is <em>not</em> the file you want to download, but an object that wraps the HTTP query and the <em>response</em> the server gave you. Before we inspect the content, we always call <code class="docutils literal notranslate"><span class="pre">.raise_for_status()</span></code>, which will raise an exception if the server told us that the request could not be fulfilled. How does the server do that? With <a class="reference external" href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">HTTP status codes</a>, a 3-digit number. There are
+several, but the most common ones are:</p>
+<ul class="simple">
+<li><p>200: Everything OK!</p></li>
+<li><p>404: File not found.</p></li>
+<li><p>500: Server error.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">.raise_for_status()</span></code> will complain if your response didn’t obtain a 200 code. As such, it’s a good practice to call it after <em>every</em> query!</p>
+<p>See this example of a bad URL, it contains an error: there’s no <strong>TXT</strong> file there, just a <strong>CSV</strong>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NBVAL_RAISES_EXCEPTION</span>
+<span class="n">bad_url</span> <span class="o">=</span> <span class="s2">"https://raw.githubusercontent.com/openkinome/kinodata/master/data/KinHubKinaseList.txt"</span>
+<span class="n">bad_response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bad_url</span><span class="p">)</span>
+<span class="n">bad_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">bad_response</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">HTTPError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[4]</span><span class="ansi-green-fg">, line 4</span>
+<span class="ansi-green-fg">      2</span> bad_url = <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">https://raw.githubusercontent.com/openkinome/kinodata/master/data/KinHubKinaseList.txt</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">      3</span> bad_response = requests.get(bad_url)
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">4</span> <span class="ansi-yellow-bg">bad_response</span><span class="ansi-yellow-bg">.</span><span class="ansi-yellow-bg">raise_for_status</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">      5</span> bad_response
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">/opt/miniconda3/envs/T011_3120/lib/python3.12/site-packages/requests/models.py:1026</span>, in <span class="ansi-cyan-fg">Response.raise_for_status</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-fg">   1021</span>     http_error_msg = (
+<span class="ansi-green-fg">   1022</span>         <span class="ansi-yellow-fg">f</span><span class="ansi-yellow-fg">"</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span><span style="color: rgb(0,135,0)">self</span>.status_code<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> Server Error: </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>reason<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg"> for url: </span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span><span style="color: rgb(0,135,0)">self</span>.url<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">   1023</span>     )
+<span class="ansi-green-fg">   1025</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> http_error_msg:
+<span class="ansi-green-fg">-&gt; </span><span class="ansi-green-fg">1026</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> HTTPError(http_error_msg, response=<span style="color: rgb(0,135,0)">self</span>)
+
+<span class="ansi-red-fg">HTTPError</span>: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/openkinome/kinodata/master/data/KinHubKinaseList.txt
+</pre></div></div>
+</div>
+<p>Ok, now let’s get to the contents of the CSV file! Depending on what you are looking for, you will need one of these attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">response.content</span></code>: The <em>bytes</em> returned by the server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">response.text</span></code>: The contents of the file, as a string, if possible.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">response.json()</span></code>: If the server returns JSON data (more on this later), this method will parse it and return the corresponding dictionary.</p></li>
+</ul>
+<p>Which one should you use? If you want to display some <em>text</em> in the Notebook output, then go for <code class="docutils literal notranslate"><span class="pre">.text</span></code>. Everything that involves binary files (images, archives, PDFs…) or downloading to disk should use <code class="docutils literal notranslate"><span class="pre">.content</span></code>.</p>
+<p>Since this a CSV file, we know that’s a plain text file, so we can use the usual Python methods on it! Let’s print the first 10 lines:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="o">*</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">10</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+﻿xName,Manning Name,HGNC Name,Kinase Name,Group,Family,SubFamily,UniprotID
+ABL1,ABL,ABL1,Tyrosine-protein kinase ABL1,TK,Abl,,P00519
+ACK,ACK,TNK2,Activated CDC42 kinase 1,TK,Ack,,Q07912
+ACTR2,ACTR2,ACVR2A,Activin receptor type-2A,TKL,STKR,STKR2,P27037
+ACTR2B,ACTR2B,ACVR2B,Activin receptor type-2B,TKL,STKR,STKR2,Q13705
+ADCK4,ADCK4,ADCK4,Uncharacterized aarF domain-containing protein kinase 4,Atypical,ABC1,ABC1-A,Q96D53
+Trb1,Trb1,TRIB1,Tribbles homolog 1,CAMK,Trbl,,Q96RU8
+BRSK2,BRSK2,BRSK2,Serine/threonine-protein kinase BRSK2,CAMK,CAMKL,BRSK,Q8IWQ3
+Wnk2,Wnk2,WNK2,Serine/threonine-protein kinase WNK2,Other,WNK,,Q9Y3S1
+AKT1,AKT1,AKT1,RAC-alpha serine/threonine-protein kinase,AGC,Akt,,P31749
+</pre></div></div>
+</div>
+<p>Of course, you can save this to disk using the usual Python constructs. Since we are <em>downloading</em>, it’s recommended to use the raw bytes contents, not the text version! This means you should use <code class="docutils literal notranslate"><span class="pre">response.content</span></code> and open your file in bytes mode (the <code class="docutils literal notranslate"><span class="pre">b</span></code> in <code class="docutils literal notranslate"><span class="pre">wb</span></code>):</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TMPDATA</span> <span class="o">/</span> <span class="s2">"kinhub.csv"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Open it again to check we wrote something.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We need the encoding="utf-8-sig" to ensure correct encoding</span>
+<span class="c1"># under all platforms</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TMPDATA</span> <span class="o">/</span> <span class="s2">"kinhub.csv"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8-sig"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># Zip will stop iterating with the shortest iterator</span>
+    <span class="c1"># passing `range(5)` allow us to just get five lines ;)</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">f</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+xName,Manning Name,HGNC Name,Kinase Name,Group,Family,SubFamily,UniprotID
+ABL1,ABL,ABL1,Tyrosine-protein kinase ABL1,TK,Abl,,P00519
+ACK,ACK,TNK2,Activated CDC42 kinase 1,TK,Ack,,Q07912
+ACTR2,ACTR2,ACVR2A,Activin receptor type-2A,TKL,STKR,STKR2,P27037
+ACTR2B,ACTR2B,ACVR2B,Activin receptor type-2B,TKL,STKR,STKR2,Q13705
+</pre></div></div>
+</div>
+<p>ℹ <strong>Tip</strong>: If all you want to do is downloading a CSV file to open it with Pandas, then just pass the raw URL to <code class="docutils literal notranslate"><span class="pre">pandas.read_csv</span></code>. It will download the file for you!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s2">"https://raw.githubusercontent.com/openkinome/kinodata/master/data/KinHubKinaseList.csv"</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>xName</th>
+<th>Manning Name</th>
+<th>HGNC Name</th>
+<th>Kinase Name</th>
+<th>Group</th>
+<th>Family</th>
+<th>SubFamily</th>
+<th>UniprotID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>ABL1</td>
+<td>ABL</td>
+<td>ABL1</td>
+<td>Tyrosine-protein kinase ABL1</td>
+<td>TK</td>
+<td>Abl</td>
+<td>NaN</td>
+<td>P00519</td>
+</tr>
+<tr>
+<th>1</th>
+<td>ACK</td>
+<td>ACK</td>
+<td>TNK2</td>
+<td>Activated CDC42 kinase 1</td>
+<td>TK</td>
+<td>Ack</td>
+<td>NaN</td>
+<td>Q07912</td>
+</tr>
+<tr>
+<th>2</th>
+<td>ACTR2</td>
+<td>ACTR2</td>
+<td>ACVR2A</td>
+<td>Activin receptor type-2A</td>
+<td>TKL</td>
+<td>STKR</td>
+<td>STKR2</td>
+<td>P27037</td>
+</tr>
+<tr>
+<th>3</th>
+<td>ACTR2B</td>
+<td>ACTR2B</td>
+<td>ACVR2B</td>
+<td>Activin receptor type-2B</td>
+<td>TKL</td>
+<td>STKR</td>
+<td>STKR2</td>
+<td>Q13705</td>
+</tr>
+<tr>
+<th>4</th>
+<td>ADCK4</td>
+<td>ADCK4</td>
+<td>ADCK4</td>
+<td>Uncharacterized aarF domain-containing protein...</td>
+<td>Atypical</td>
+<td>ABC1</td>
+<td>ABC1-A</td>
+<td>Q96D53</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div>
+<p>One note about file downloads. The method above downloads the whole file into memory, which can be a problem for very big files. If you intend to download a very large file, you can push it to disk directly using <a class="reference external" href="https://requests.readthedocs.io/en/master/user/advanced/#streaming-requests">streaming requests</a> and <a class="reference external" href="https://docs.python-requests.org/en/v1.1.0/user/quickstart/?highlight=raw%20response#raw-response-content">raw responses</a>. As an example, let’s pretend this <a class="reference external" href="https://archive.org/download/SlowMotionFlame/slomoflame_512kb.mp4">1MB
+video</a> is <em>too big to fit in memory</em>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Video</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s2">"https://archive.org/download/SlowMotionFlame/slomoflame_512kb.mp4"</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">TMPDATA</span> <span class="o">/</span> <span class="s2">"video.mp4"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">8192</span><span class="p">):</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+    <span class="c1"># Let's play the movie in Jupyter!</span>
+    <span class="c1"># Paths passed to widgets need to be relative to notebook or they will 404 :)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">Video</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">HERE</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<video controls="" src="data/_tmp/video.mp4">
+      Your browser does not support the <code>video</code> element.
+    </video></div>
+</div>
+</section>
+<section id="Accessing-dynamically-generated-content">
+<h3 id="Accessing-dynamically-generated-content">Accessing dynamically generated content<a class="headerlink" href="#Accessing-dynamically-generated-content" title="Link to this heading">¶</a></h3>
+<p>So far, we have been able to retrieve <em>files</em> that were present on a remote server. To do that, we used <code class="docutils literal notranslate"><span class="pre">requests.get</span></code> and a URL that points to the file.</p>
+<p>Well, it turns out that the same technique will work for many more types of content! What the server does with the URL is not our concern! Whether the server only needs to give you a file on disk or query a database and assemble different parts into the returned content does not matter at all.</p>
+<p>That concept alone is extremely powerful, as you will see now. Remember: <strong>We just need to make sure we request the correct URL!</strong></p>
+<p>Let’s work on something fun now! The spike protein in SARS-CoV-2 is one of the most popular proteins lately, can we get some information from <a class="reference external" href="https://www.uniprot.org/">UniProt</a> using <code class="docutils literal notranslate"><span class="pre">requests</span></code>? Its UniProt ID is <code class="docutils literal notranslate"><span class="pre">P0DTC2</span></code>. <a class="reference external" href="https://www.uniprot.org/uniprot/P0DTC2">Go check with your browser first</a>, you should see something like this:</p>
+<img alt="UniProt entry for SARS-CoV-2" src="../_images/uniprot-sars-cov-2.jpg"/>
+<p>One of the things UniProt provides is the amino acid sequence of the listed protein. Scroll down until you see this part:</p>
+<img alt="Sequence for SARS-CoV-2" src="../_images/uniprot-sars-cov-2-sequence.jpg"/>
+<p>Do you think we can get <em>only</em> the sequence using Python? Let’s see!</p>
+<p>To query a protein, you simply need to add its UniProt ID to the URL.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://www.uniprot.org/uniprot/P0DTC2"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">5000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;&lt;meta charset="utf-8"/&gt;&lt;title&gt;UniProt&lt;/title&gt;&lt;meta name="viewport" content="width=device-width,initial-scale=1"/&gt;&lt;link rel="preconnect" href="https://rest.uniprot.org/"/&gt;&lt;link rel="preconnect" href="https://fonts.googleapis.com"/&gt;&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/&gt;&lt;meta name="theme-color" content="#00639a"/&gt;&lt;meta property="og:logo" content="https://www.uniprot.org/android-chrome-512x512.png"/&gt;&lt;meta property="og:title" content="UniProt"/&gt;&lt;meta property="og:description" content="UniProt is the world's leading high-quality, comprehensive and freely accessible resource of protein sequence and functional information."/&gt;&lt;meta property="og:image" content="https://www.uniprot.org/og-uniprot-wide-logo-1200x630.png"/&gt;&lt;meta property="og:type" content="website"/&gt;&lt;meta property="og:site_name" content="UniProt"/&gt;&lt;meta property="og:image" content="https://www.uniprot.org/og-uniprot-square-logo-1200x1200.png"/&gt;&lt;meta property="og:image:alt" content="UniProt logo"/&gt;&lt;meta name="twitter:card" content="summary_large_image"/&gt;&lt;meta property="twitter:domain" content="uniprot.org"&gt;&lt;meta property="twitter:url" content="https://www.uniprot.org"&gt;&lt;meta name="twitter:title" content="UniProt"/&gt;&lt;meta name="twitter:description" content="UniProt is the world's leading high-quality, comprehensive and freely accessible resource of protein sequence and functional information."/&gt;&lt;meta name="twitter:image" content="https://www.uniprot.org/og-uniprot-wide-logo-1200x600.png"/&gt;&lt;meta name="twitter:image:alt" content="UniProt logo"/&gt;&lt;link href="https://fonts.googleapis.com/css?family=Lato:400,700|Source+Sans+Pro:600,700&amp;display=optional" rel="stylesheet"/&gt;&lt;link rel="search" type="application/opensearchdescription+xml" href="https://www.uniprot.org/opensearch.xml" title="UniProt"&gt;&lt;link rel="apple-touch-icon" sizes="180x180" href="https://www.uniprot.org/apple-touch-icon.png"/&gt;&lt;link rel="shortcut icon" type="image/png" sizes="144x144" href="https://www.uniprot.org/mstile-144x144.png"/&gt;&lt;link rel="icon" type="image/png" sizes="32x32" href="https://www.uniprot.org/favicon-32x32.png"/&gt;&lt;link rel="icon" type="image/png" sizes="16x16" href="https://www.uniprot.org/favicon-16x16.png"/&gt;&lt;link rel="manifest" href="https://www.uniprot.org/manifest.json"/&gt;&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-V6TXEC4BDF"&gt;&lt;/script&gt;&lt;script&gt;window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      // GA4
+      gtag('config', 'G-V6TXEC4BDF', {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        restricted_data_processing: true,
+        custom_map: {
+          dimension1: 'result_view',
+          metric1: 'result_view_set',
+        },
+        send_page_view: false,
+      });&lt;/script&gt;&lt;script&gt;(function (h, o, t, j, a, r) {
+        h.hj =
+          h.hj ||
+          function () {
+            (h.hj.q = h.hj.q || []).push(arguments);
+          };
+        h._hjSettings = { hjid: 2638207, hjsv: 6 };
+        a = o.getElementsByTagName('head')[0];
+        r = o.createElement('script');
+        r.async = 1;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+      })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');&lt;/script&gt;&lt;style&gt;#root &gt; .fallback {
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        animation: fallback-appear 1s 1 10s both;
+      }
+
+      #root &gt; .fallback &gt; div {
+        max-width: 60ch;
+      }
+
+      #root &gt; .fallback li {
+        margin-bottom: 1em;
+      }
+
+      @keyframes fallback-appear {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }&lt;/style&gt;&lt;link rel="stylesheet" href="/styles.4ba631.css"/&gt;&lt;link rel="stylesheet" href="/styles.c64fcc.css"/&gt;&lt;/head&gt;&lt;body&gt;&lt;div id="root"&gt;&lt;div class="fallback" data-nosnippet&gt;&lt;div&gt;&lt;h1&gt;UniProt website fallback message&lt;/h1&gt;If you are not seeing anything on this page, it might be for multiple reasons:&lt;ul&gt;&lt;noscript&gt;&lt;li&gt;&lt;strong&gt;You might have JavaScript disabled&lt;/strong&gt;: make sure to enable JavaScript on your browser, or use a browser that supports JavaScript.&lt;/li&gt;&lt;/noscript&gt;&lt;li&gt;&lt;strong&gt;You might have an outdated browser&lt;/strong&gt;: make sure that your browser is up to date as older versions might not work with the website.&lt;/li&gt;&lt;li&gt;&lt;strong&gt;There might have been a network issue&lt;/strong&gt;: ensure that your connectivity is stable and try to reload the page to see if it solves the issue. &lt;button onclick="location.reload();"&gt;Reload this page&lt;/button&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;script nomodule&gt;// workaround for Safari 10.1 supporting module but ignoring nomodule
+      // From https://gist.github.com/samthor/64b114e4a4f539915a95b91ffd340acc
+      (function () {
+        var d = document;
+        var c = d.createEl
+</pre></div></div>
+</div>
+<p>Wow, what is all that noise? You are seeing the HTML content of the webpage! That’s the markup language web developers use to write webpages.</p>
+<p>There are libraries to process HTML and extract the actual content (like <code class="docutils literal notranslate"><span class="pre">BeautifulSoup</span></code>; more below), but we will not need it here yet. Fortunately, UniProt provides alternative representations of the data.</p>
+<img alt="UniProt formats" src="../_images/uniprot-sars-cov-2-formats.jpg"/>
+<p>Some formats are more convenient for programmatic use. If you click on <code class="docutils literal notranslate"><span class="pre">Text</span></code> you will see something different in your browser: just plain text! Also, notice how the URL is now different.</p>
+<ul class="simple">
+<li><p>HTML representation (default): <a class="reference external" href="https://www.uniprot.org/uniprot/P0DTC2">https://www.uniprot.org/uniprot/P0DTC2</a></p></li>
+<li><p>Text representation: <a class="reference external" href="https://www.uniprot.org/uniprot/P0DTC2.txt">https://www.uniprot.org/uniprot/P0DTC2.txt</a></p></li>
+</ul>
+<p>Just adding the <code class="docutils literal notranslate"><span class="pre">.txt</span></code> extension was enough to change the style. This is a nice feature UniProt provides. It mimics a file system, but it’s actually changing the representation of the returned content. Elegant! And more important, easier to use programmatically! Check it:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://www.uniprot.org/uniprot/P0DTC2.txt"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ID   SPIKE_SARS2             Reviewed;        1273 AA.
+AC   P0DTC2;
+DT   22-APR-2020, integrated into UniProtKB/Swiss-Prot.
+DT   22-APR-2020, sequence version 1.
+DT   18-JUN-2025, entry version 28.
+DE   RecName: Full=Spike glycoprotein {ECO:0000255|HAMAP-Rule:MF_04099};
+DE            Short=S glycoprotein {ECO:0000255|HAMAP-Rule:MF_04099};
+DE   AltName: Full=E2 {ECO:0000255|HAMAP-Rule:MF_04099};
+DE   AltName: Full=Peplomer protein {ECO:0000255|HAMAP-Rule:MF_04099};
+DE   Contains:
+DE     RecName: Full=Spike protein S1 {ECO:0000255|HAMAP-Rule:MF_04099};
+DE   Contains:
+DE     RecName: Full=Spike protein S2 {ECO:0000255|HAMAP-Rule:MF_04099};
+DE   Contains:
+DE     RecName: Full=Spike protein S2' {ECO:0000255|HAMAP-Rule:MF_04099};
+DE   Flags: Precursor;
+GN   Name=S {ECO:0000255|HAMAP-Rule:MF_04099}; ORFNames=2;
+OS   Severe acute respiratory syndrome coronavirus 2 (2019-nCoV) (SARS-CoV-2).
+OC   Viruses; Riboviria; Orthornavirae; Pisuviricota; Pisoniviricetes;
+OC   Nidovirales; Cornidovirineae;
+</pre></div></div>
+</div>
+<p>This is <em>exactly</em> what we see on our browser! Plain text is nice for these things. However, the sequence is all the way at the end of the file. To retrieve it, you need to get creative and analyze those little tags each line has. See how it begins with <code class="docutils literal notranslate"><span class="pre">SQ</span></code> and finishes with <code class="docutils literal notranslate"><span class="pre">//</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>SQ   SEQUENCE   1273 AA;  141178 MW;  B17BE6D9F1C4EA34 CRC64;
+     MFVFLVLLPL VSSQCVNLTT RTQLPPAYTN SFTRGVYYPD KVFRSSVLHS TQDLFLPFFS
+     NVTWFHAIHV SGTNGTKRFD NPVLPFNDGV YFASTEKSNI IRGWIFGTTL DSKTQSLLIV
+     NNATNVVIKV CEFQFCNDPF LGVYYHKNNK SWMESEFRVY SSANNCTFEY VSQPFLMDLE
+     GKQGNFKNLR EFVFKNIDGY FKIYSKHTPI NLVRDLPQGF SALEPLVDLP IGINITRFQT
+     LLALHRSYLT PGDSSSGWTA GAAAYYVGYL QPRTFLLKYN ENGTITDAVD CALDPLSETK
+     CTLKSFTVEK GIYQTSNFRV QPTESIVRFP NITNLCPFGE VFNATRFASV YAWNRKRISN
+     CVADYSVLYN SASFSTFKCY GVSPTKLNDL CFTNVYADSF VIRGDEVRQI APGQTGKIAD
+     YNYKLPDDFT GCVIAWNSNN LDSKVGGNYN YLYRLFRKSN LKPFERDIST EIYQAGSTPC
+     NGVEGFNCYF PLQSYGFQPT NGVGYQPYRV VVLSFELLHA PATVCGPKKS TNLVKNKCVN
+     FNFNGLTGTG VLTESNKKFL PFQQFGRDIA DTTDAVRDPQ TLEILDITPC SFGGVSVITP
+     GTNTSNQVAV LYQDVNCTEV PVAIHADQLT PTWRVYSTGS NVFQTRAGCL IGAEHVNNSY
+     ECDIPIGAGI CASYQTQTNS PRRARSVASQ SIIAYTMSLG AENSVAYSNN SIAIPTNFTI
+     SVTTEILPVS MTKTSVDCTM YICGDSTECS NLLLQYGSFC TQLNRALTGI AVEQDKNTQE
+     VFAQVKQIYK TPPIKDFGGF NFSQILPDPS KPSKRSFIED LLFNKVTLAD AGFIKQYGDC
+     LGDIAARDLI CAQKFNGLTV LPPLLTDEMI AQYTSALLAG TITSGWTFGA GAALQIPFAM
+     QMAYRFNGIG VTQNVLYENQ KLIANQFNSA IGKIQDSLSS TASALGKLQD VVNQNAQALN
+     TLVKQLSSNF GAISSVLNDI LSRLDKVEAE VQIDRLITGR LQSLQTYVTQ QLIRAAEIRA
+     SANLAATKMS ECVLGQSKRV DFCGKGYHLM SFPQSAPHGV VFLHVTYVPA QEKNFTTAPA
+     ICHDGKAHFP REGVFVSNGT HWFVTQRNFY EPQIITTDNT FVSGNCDVVI GIVNNTVYDP
+     LQPELDSFKE ELDKYFKNHT SPDVDLGDIS GINASVVNIQ KEIDRLNEVA KNLNESLIDL
+     QELGKYEQYI KWPWYIWLGF IAGLIAIVMV TIMLCCMTSC CSCLKGCCSC GSCCKFDEDD
+     SEPVLKGVKL HYT
+//
+</pre></div>
+</div>
+<p>Hence, you could do something like this:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_block</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"SQ"</span><span class="p">):</span>
+        <span class="n">sequence_block</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"//"</span><span class="p">):</span>
+        <span class="n">sequence_block</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">sequence_block</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>  <span class="c1"># delete spaces and newlines at the beginning and end of the line</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>  <span class="c1"># delete spaces in the middle of the line</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>  <span class="c1"># the first line is the metadata header</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This is your sequence: </span><span class="si">{</span><span class="n">sequence</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+This is your sequence: MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT
+</pre></div></div>
+</div>
+<p>Ta-da! We got it! It required some processing, but it works… However, you should always wonder if there’s an easier way. Given that UniProt had a nice way of providing the text representation, how come they don’t offer a URL that <em>only</em> returns the sequence for a given UniProt ID? Well, they do! Just change <code class="docutils literal notranslate"><span class="pre">.txt</span></code> for <code class="docutils literal notranslate"><span class="pre">.fasta</span></code>: <a class="reference external" href="https://www.uniprot.org/uniprot/P0DTC2.fasta">https://www.uniprot.org/uniprot/P0DTC2.fasta</a></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://www.uniprot.org/uniprot/P0DTC2.fasta"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&gt;sp|P0DTC2|SPIKE_SARS2 Spike glycoprotein OS=Severe acute respiratory syndrome coronavirus 2 OX=2697049 GN=S PE=1 SV=1
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFS
+NVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIV
+NNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLE
+GKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQT
+LLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETK
+CTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISN
+CVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIAD
+YNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPC
+NGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVN
+FNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITP
+GTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSY
+ECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTI
+SVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQE
+VFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDC
+LGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAM
+QMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALN
+TLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRA
+SANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPA
+ICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDP
+LQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDL
+QELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDD
+SEPVLKGVKLHYT
+
+</pre></div></div>
+</div>
+<p>This is returned in FASTA, a common syntax in bioinformatics. You could use established libraries like <a class="reference external" href="https://biopython.org/">BioPython</a> to parse it too!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tempfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTemporaryFile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># Write response into a temporary text file</span>
+<span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".fasta"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+    <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># Create the BioPython object for sequence data:</span>
+<span class="n">sequence</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"fasta"</span><span class="p">)</span>
+
+<span class="c1"># Delete temporary file now that we have read it</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+sp|P0DTC2|SPIKE_SARS2 Spike glycoprotein OS=Severe acute respiratory syndrome coronavirus 2 OX=2697049 GN=S PE=1 SV=1
+MFVFLVLLPLVSSQCVNLTTRTQLPPAYTNSFTRGVYYPDKVFRSSVLHSTQDLFLPFFSNVTWFHAIHVSGTNGTKRFDNPVLPFNDGVYFASTEKSNIIRGWIFGTTLDSKTQSLLIVNNATNVVIKVCEFQFCNDPFLGVYYHKNNKSWMESEFRVYSSANNCTFEYVSQPFLMDLEGKQGNFKNLREFVFKNIDGYFKIYSKHTPINLVRDLPQGFSALEPLVDLPIGINITRFQTLLALHRSYLTPGDSSSGWTAGAAAYYVGYLQPRTFLLKYNENGTITDAVDCALDPLSETKCTLKSFTVEKGIYQTSNFRVQPTESIVRFPNITNLCPFGEVFNATRFASVYAWNRKRISNCVADYSVLYNSASFSTFKCYGVSPTKLNDLCFTNVYADSFVIRGDEVRQIAPGQTGKIADYNYKLPDDFTGCVIAWNSNNLDSKVGGNYNYLYRLFRKSNLKPFERDISTEIYQAGSTPCNGVEGFNCYFPLQSYGFQPTNGVGYQPYRVVVLSFELLHAPATVCGPKKSTNLVKNKCVNFNFNGLTGTGVLTESNKKFLPFQQFGRDIADTTDAVRDPQTLEILDITPCSFGGVSVITPGTNTSNQVAVLYQDVNCTEVPVAIHADQLTPTWRVYSTGSNVFQTRAGCLIGAEHVNNSYECDIPIGAGICASYQTQTNSPRRARSVASQSIIAYTMSLGAENSVAYSNNSIAIPTNFTISVTTEILPVSMTKTSVDCTMYICGDSTECSNLLLQYGSFCTQLNRALTGIAVEQDKNTQEVFAQVKQIYKTPPIKDFGGFNFSQILPDPSKPSKRSFIEDLLFNKVTLADAGFIKQYGDCLGDIAARDLICAQKFNGLTVLPPLLTDEMIAQYTSALLAGTITSGWTFGAGAALQIPFAMQMAYRFNGIGVTQNVLYENQKLIANQFNSAIGKIQDSLSSTASALGKLQDVVNQNAQALNTLVKQLSSNFGAISSVLNDILSRLDKVEAEVQIDRLITGRLQSLQTYVTQQLIRAAEIRASANLAATKMSECVLGQSKRVDFCGKGYHLMSFPQSAPHGVVFLHVTYVPAQEKNFTTAPAICHDGKAHFPREGVFVSNGTHWFVTQRNFYEPQIITTDNTFVSGNCDVVIGIVNNTVYDPLQPELDSFKEELDKYFKNHTSPDVDLGDISGINASVVNIQKEIDRLNEVAKNLNESLIDLQELGKYEQYIKWPWYIWLGFIAGLIAIVMVTIMLCCMTSCCSCLKGCCSCGSCCKFDEDDSEPVLKGVKLHYT
+</pre></div></div>
+</div>
+<p>All these ways to access different representations or sections of the data contained in UniProt constitutes a URL-based API (Application Programmatic Interface). The foundational principle is that the URL contains all the <strong>parameters</strong> needed to ask the server for a specific type of content. Yes, you read that correctly: <strong>parameters</strong>. If you think about it, a URL specifies two parts: the machine you are connecting to and the page in that machine you want to access. When the page part is
+missing, the server assumes you are asking for <code class="docutils literal notranslate"><span class="pre">index.html</span></code> or equivalent.</p>
+<p>Let’s compare it to a command-line interface:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@ # this is your browser
+@ uniprot.org/uniprot/P0DTC2.fasta
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="c1"># this is your terminal</span>
+$<span class="w"> </span>uniprot<span class="w"> </span>--id<span class="o">=</span>P0DTC2<span class="w"> </span>--format<span class="o">=</span>FASTA
+</pre></div>
+</div>
+<p>Each part of the URL can be considered a positional argument! So, if you want the sequence of a different protein, just input its UniProt ID in the URL, done! For example, <code class="docutils literal notranslate"><span class="pre">P00519</span></code> is the ID for the ABL1 kinase.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://www.uniprot.org/uniprot/P00519.fasta"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&gt;sp|P00519|ABL1_HUMAN Tyrosine-protein kinase ABL1 OS=Homo sapiens OX=9606 GN=ABL1 PE=1 SV=4
+MLEICLKLVGCKSKKGLSSSSSCYLEEALQRPVASDFEPQGLSEAARWNSKENLLAGPSE
+NDPNLFVALYDFVASGDNTLSITKGEKLRVLGYNHNGEWCEAQTKNGQGWVPSNYITPVN
+SLEKHSWYHGPVSRNAAEYLLSSGINGSFLVRESESSPGQRSISLRYEGRVYHYRINTAS
+DGKLYVSSESRFNTLAELVHHHSTVADGLITTLHYPAPKRNKPTVYGVSPNYDKWEMERT
+DITMKHKLGGGQYGEVYEGVWKKYSLTVAVKTLKEDTMEVEEFLKEAAVMKEIKHPNLVQ
+LLGVCTREPPFYIITEFMTYGNLLDYLRECNRQEVNAVVLLYMATQISSAMEYLEKKNFI
+HRDLAARNCLVGENHLVKVADFGLSRLMTGDTYTAHAGAKFPIKWTAPESLAYNKFSIKS
+DVWAFGVLLWEIATYGMSPYPGIDLSQVYELLEKDYRMERPEGCPEKVYELMRACWQWNP
+SDRPSFAEIHQAFETMFQESSISDEVEKELGKQGVRGAVSTLLQAPELPTKTRTSRRAAE
+HRDTTDVPEMPHSKGQGESDPLDHEPAVSPLLPRKERGPPEGGLNEDERLLPKDKKTNLF
+SALIKKKKKTAPTPPKRSSSFREMDGQPERRGAGEEEGRDISNGALAFTPLDTADPAKSP
+KPSNGAGVPNGALRESGGSGFRSPHLWKKSSTLTSSRLATGEEEGGGSSSKRFLRSCSAS
+CVPHGAKDTEWRSVTLPRDLQSTGRQFDSSTFGGHKSEKPALPRKRAGENRSDQVTRGTV
+TPPPRLVKKNEEAADEVFKDIMESSPGSSPPNLTPKPLRRQVTVAPASGLPHKEEAGKGS
+ALGTPAAAEPVTPTSKAGSGAPGGTSKGPAEESRVRRHKHSSESPGRDKGKLSRLKPAPP
+PPPAASAGKAGGKPSQSPSQEAAGEAVLGAKTKATSLVDAVNSDAAKPSQPGEGLKKPVL
+PATPKPQSAKPSGTPISPAPVPSTLPSASSALAGDQPSSTAFIPLISTRVSLRKTRQPPE
+RIASGAITKGVVLDSTEALCLAISRNSEQMASHSAVLEAGKNLYTFCVSYVDSIQQMRNK
+FAFREAINKLENNLRELQICPATAGSGPAATQDFSKLLSSVKEISDIVQR
+
+</pre></div></div>
+</div>
+<p>What if we parameterize the URL with an f-string and provide a function to make it super Pythonic? Even better, what if we provide the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> parsing functionality too?</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sequence_for_uniprot_id</span><span class="p">(</span><span class="n">uniprot_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Returns the FASTA sequence of a given Uniprot ID using</span>
+<span class="sd">    the UniProt URL-based API</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    uniprot_id : str</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Bio.SeqIO.SeqRecord</span>
+<span class="sd">    """</span>
+    <span class="c1">#                                                  ⬇ this is key part!</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"https://www.uniprot.org/uniprot/</span><span class="si">{</span><span class="n">uniprot_id</span><span class="si">}</span><span class="s2">.fasta"</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">".fasta"</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"w"</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">tmp</span><span class="p">:</span>
+        <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">sequence</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"fasta"</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sequence</span>
+</pre></div>
+</div>
+</div>
+<p>Now you can use it for any UniProt ID. This is for the <a class="reference external" href="https://www.uniprot.org/uniprot/P12931">Src kinase</a>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence</span> <span class="o">=</span> <span class="n">sequence_for_uniprot_id</span><span class="p">(</span><span class="s2">"P12931"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+ID: sp|P12931|SRC_HUMAN
+Name: sp|P12931|SRC_HUMAN
+Description: sp|P12931|SRC_HUMAN Proto-oncogene tyrosine-protein kinase Src OS=Homo sapiens OX=9606 GN=SRC PE=1 SV=3
+Number of features: 0
+Seq('MGSNKSKPKDASQRRRSLEPAENVHGAGGGAFPASQTPSKPASADGHRGPSAAF...ENL')
+</pre></div></div>
+</div>
+<p>Congratulations! You have used your first online API in Python and adapted it to a workflow!</p>
+</section>
+<section id="Programmatic-interfaces">
+<h3 id="Programmatic-interfaces">Programmatic interfaces<a class="headerlink" href="#Programmatic-interfaces" title="Link to this heading">¶</a></h3>
+<p>What UniProt does with their URLs is <em>one way</em> of providing access to their database, i.e., through specific URL schemes. However, if each web service would have to come up with their own scheme, developers would need to figure out which scheme the website is using, and then implement, adapt or customize their scripts on a case-by-case basis. Fortunately, there are some standardized ways of providing programmatic access to online resources. Some of them include:</p>
+<ul class="simple">
+<li><p>HTTP-based RESTful APIs (<a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_Web_services">wiki</a>)</p></li>
+<li><p>GraphQL</p></li>
+<li><p>SOAP</p></li>
+<li><p>gRPC</p></li>
+</ul>
+<p>In this talktorial, we will focus on the first one, <a class="reference external" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST</a>.</p>
+<section id="HTTP-based-RESTful-APIs">
+<h4 id="HTTP-based-RESTful-APIs">HTTP-based RESTful APIs<a class="headerlink" href="#HTTP-based-RESTful-APIs" title="Link to this heading">¶</a></h4>
+<p>This type of programmatic access defines a specific entry point for clients (scripts, libraries, programs) that require programmatic access, something like <code class="docutils literal notranslate"><span class="pre">api.webservice.com</span></code>. This is usually different from the website itself (<code class="docutils literal notranslate"><span class="pre">webservice.com</span></code>). They can be versioned, so the provider can update the scheme without disrupting existing implementations (<code class="docutils literal notranslate"><span class="pre">api.webservice.com/v1</span></code> will still work even when <code class="docutils literal notranslate"><span class="pre">api.webservice.com/v2</span></code> has been deployed).</p>
+<p>This kind of API is usually accompanied by well-written documentation explaining all the available actions in the platform. For example, look at the <a class="reference external" href="https://klifs.net/swagger">KLIFS API documentation</a>. KLIFS is a database of kinase targets and small compound inhibitors. You can see how every argument and option is documented, along with usage examples.</p>
+<p>If you wanted to list all the kinase families available in KLIFS, you need to access this URL:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://klifs.net/api/kinase_groups
+</pre></div>
+</div>
+<details><summary><p>Result (click here!)</p>
+</summary><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+  "AGC",
+  "CAMK",
+  "CK1",
+  "CMGC",
+  "Other",
+  "STE",
+  "TK",
+  "TKL"
+]
+</pre></div>
+</div>
+</details><p>This response happens to be <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a>-formatted! This is easily parsed into a Python object using the <code class="docutils literal notranslate"><span class="pre">json</span></code> library. The best news is that you don’t even need that. Using <code class="docutils literal notranslate"><span class="pre">requests</span></code>, the following operation can be done in three lines thanks to the <code class="docutils literal notranslate"><span class="pre">.json()</span></code> method:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://klifs.net/api/kinase_groups"</span><span class="p">)</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">result</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+['AGC', 'CAMK', 'CK1', 'CMGC', 'Other', 'STE', 'TK', 'TKL']
+</pre></div></div>
+</div>
+<p>That’s a Python <code class="docutils literal notranslate"><span class="pre">list</span></code>!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+'AGC'
+</pre></div></div>
+</div>
+<p>Let’s see if we can get all the kinase <em>families</em> contained in a specific group. Reading the documentation, looks like we need this kind of URL:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://klifs.net/api/kinase_families?kinase_group={{ NAME }}
+</pre></div>
+</div>
+<blockquote>
+<div><p>What follows after the <code class="docutils literal notranslate"><span class="pre">?</span></code> symbol is the <em>query</em>. It’s formatted with a key-value syntax like this: <code class="docutils literal notranslate"><span class="pre">key=value</span></code>. Multiple parameters can be expressed with <code class="docutils literal notranslate"><span class="pre">&amp;</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>https://api.webservice.com/some/endpoint?parameter1=value1&amp;parameter2=value2
+</pre></div>
+</div>
+</div></blockquote>
+<p>Let’s see the returned object for the tyrosine kinase (TK) group: <code class="docutils literal notranslate"><span class="pre">family=TK</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://klifs.net/api/kinase_families?kinase_group=TK"</span><span class="p">)</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+['ALK',
+ 'Abl',
+ 'Ack',
+ 'Alk',
+ 'Axl',
+ 'CCK4',
+ 'Csk',
+ 'DDR',
+ 'EGFR',
+ 'Eph',
+ 'FAK',
+ 'FGFR',
+ 'Fer',
+ 'InsR',
+ 'JakA',
+ 'JakB',
+ 'Lmr',
+ 'Met',
+ 'Musk',
+ 'PDGFR',
+ 'Ret',
+ 'Ror',
+ 'Ryk',
+ 'Sev',
+ 'Src',
+ 'Syk',
+ 'TK-Unique',
+ 'Tec',
+ 'Tie',
+ 'Trk',
+ 'VEGFR']
+</pre></div></div>
+</div>
+<p>Since passing parameters to the URL is a very common task, <code class="docutils literal notranslate"><span class="pre">requests</span></code> provides a more convenient way. This will save you from building the URLs manually or HTML escaping the values. The key idea is to pass the key-value pairs as a dictionary. The previous query can be (and should be, if you ask us) done like this:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://klifs.net/api/kinase_families"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"kinase_group"</span><span class="p">:</span> <span class="s2">"TK"</span><span class="p">})</span>
+<span class="c1"># You can see how requests formatted the URL for you</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Queried"</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Queried https://klifs.net/api/kinase_families?kinase_group=TK
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+['ALK',
+ 'Abl',
+ 'Ack',
+ 'Alk',
+ 'Axl',
+ 'CCK4',
+ 'Csk',
+ 'DDR',
+ 'EGFR',
+ 'Eph',
+ 'FAK',
+ 'FGFR',
+ 'Fer',
+ 'InsR',
+ 'JakA',
+ 'JakB',
+ 'Lmr',
+ 'Met',
+ 'Musk',
+ 'PDGFR',
+ 'Ret',
+ 'Ror',
+ 'Ryk',
+ 'Sev',
+ 'Src',
+ 'Syk',
+ 'TK-Unique',
+ 'Tec',
+ 'Tie',
+ 'Trk',
+ 'VEGFR']
+</pre></div></div>
+</div>
+<p>Sometimes the returned JSON object is not a list, but a dict. Or a combination of dictionaries and lists. Maybe even nested! You can still access them using the Python tools you already know.</p>
+<p>For example, the <code class="docutils literal notranslate"><span class="pre">kinase_information</span></code> endpoint <em>requires</em> a numeric ID, and will return a lot of information on a single kinase:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://klifs.net/api/kinase_information"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"kinase_ID"</span><span class="p">:</span> <span class="mi">22</span><span class="p">})</span>
+<span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">result</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[{'kinase_ID': 22,
+  'name': 'MASTL',
+  'HGNC': 'MASTL',
+  'family': 'MAST',
+  'group': 'AGC',
+  'kinase_class': 'MASTL',
+  'species': 'Human',
+  'full_name': 'microtubule associated serine/threonine kinase like',
+  'uniprot': 'Q96GX5',
+  'iuphar': 0,
+  'pocket': 'KPISRGAFGKVYLYAVKVVQVQAERDALALSKPFIVHLYYSYLVMEYLIGGDVKSLLHIYLHRHGIIHRDLKPDNMLILTDFGLS'}]
+</pre></div></div>
+</div>
+<p>If you want to know the UniProt ID for this kinase, you will need to access the first (and only) element in the returned list, and ask for the value of the <code class="docutils literal notranslate"><span class="pre">uniprot</span></code> key:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"uniprot"</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+'Q96GX5'
+</pre></div></div>
+</div>
+<p>Turns out we can use this to get the full sequence of the protein (and not just the pocket sequence) using our UniProt function from before!</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mastl</span> <span class="o">=</span> <span class="n">sequence_for_uniprot_id</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"uniprot"</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mastl</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+MDPTAGSKKEPGGGAATEEGVNRIAVPKPPSIEEFSIVKPISRGAFGKVYLGQKGGKLYAVKVVKKADMINKNMTHQVQAERDALALSKSPFIVHLYYSLQSANNVYLVMEYLIGGDVKSLLHIYGYFDEEMAVKYISEVALALDYLHRHGIIHRDLKPDNMLISNEGHIKLTDFGLSKVTLNRDINMMDILTTPSMAKPRQDYSRTPGQVLSLISSLGFNTPIAEKNQDPANILSACLSETSQLSQGLVCPMSVDQKDTTPYSSKLLKSCLETVASNPGMPVKCLTSNLLQSRKRLATSSASSQSHTFISSVESECHSSPKWEKDCQESDEALGPTMMSWNAVEKLCAKSANAIETKGFNKKDLELALSPIHNSSALPTTGRSCVNLAKKCFSGEVSWEAVELDVNNINMDTDTSQLGFHQSNQWAVDSGGISEEHLGKRSLKRNFELVDSSPCKKIIQNKKTCVEYKHNEMTNCYTNQNTGLTVEVQDLKLSVHKSQQNDCANKENIVNSFTDKQQTPEKLPIPMIAKNLMCELDEDCEKNSKRDYLSSSFLCSDDDRASKNISMNSDSSFPGISIMESPLESQPLDSDRSIKESSFEESNIEDPLIVTPDCQEKTSPKGVENPAVQESNQKMLGPPLEVLKTLASKRNAVAFRSFNSHINASNNSEPSRMNMTSLDAMDISCAYSGSYPMAITPTQKRRSCMPHQQTPNQIKSGTPYRTPKSVRRGVAPVDDGRILGTPDYLAPELLLGRAHGPAVDWWALGVCLFEFLTGIPPFNDETPQQVFQNILKRDIPWPEGEEKLSDNAQSAVEILLTIDDTKRAGMKELKRHPLFSDVDWENLQHQTMPFIPQPDDETDTSYFEARNTAQHLTVSGFSL
+</pre></div></div>
+</div>
+<p>We are using two webservices together, awesome!</p>
+</section>
+<section id="Generating-a-client-for-any-API">
+<h4 id="Generating-a-client-for-any-API">Generating a client for any API<a class="headerlink" href="#Generating-a-client-for-any-API" title="Link to this heading">¶</a></h4>
+<p>Did you find that convenient? Well, we are not done yet! You might have noticed that all the endpoints in the KLIFS API have a similar pattern. You specify the name of the endpoint (<code class="docutils literal notranslate"><span class="pre">kinase_groups</span></code>, <code class="docutils literal notranslate"><span class="pre">kinase_families</span></code>, <code class="docutils literal notranslate"><span class="pre">kinase_information</span></code>, …), pass some (optional) parameters if needed, and then get a JSON-formatted response. Is there a way you can avoid having to format the URLs yourself? The answer is… yes!</p>
+<p>The REST API scheme can be expressed programmatically in a document called <a class="reference external" href="https://swagger.io/docs/specification/about/">Swagger/OpenAPI definitions</a>, which allows to dynamically generate a Python client for any REST API that implements the Swagger/OpenAPI schema. <a class="reference external" href="https://klifs.net/swagger/swagger.json">This is the one for KLIFS</a>.</p>
+<p>Of course, there are libraries for doing that in Python, like <code class="docutils literal notranslate"><span class="pre">bravado</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bravado.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">SwaggerClient</span>
+
+<span class="n">KLIFS_SWAGGER</span> <span class="o">=</span> <span class="s2">"https://klifs.net/swagger/swagger.json"</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SwaggerClient</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">KLIFS_SWAGGER</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">"validate_responses"</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+<span class="n">client</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SwaggerClient(https://klifs.net/api)
+</pre></div></div>
+</div>
+<p>Then, you can have fun inspecting the <code class="docutils literal notranslate"><span class="pre">client</span></code> object for all the API actions as methods.</p>
+<p>ℹ <strong>Tip</strong>: Type <code class="docutils literal notranslate"><span class="pre">client.</span></code> and press Tab to inspect the client in this notebook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">?</span>client.Information.get_kinase_names
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">Signature:</span>      client.Information.get_kinase_names(**op_kwargs)
+<span class="ansi-red-fg">Type:</span>           CallableOperation
+<span class="ansi-red-fg">String form:</span>    &lt;bravado.client.CallableOperation object at 0x10bb39640&gt;
+<span class="ansi-red-fg">File:</span>           /opt/miniconda3/envs/T011_3120/lib/python3.12/site-packages/bravado/client.py
+<span class="ansi-red-fg">Docstring:</span>
+[GET] Kinase names
+
+The Kinase names endpoint returns a list of all available kinases in KLIFS according using the HGNC gene symbols. When a kinase group or kinase family is specified only those kinase names that are within that kinase group or kinase family are returned. When both a group and a family are specified, only the family is used to process the request.
+
+
+:param kinase_group: Optional: Name (or multiple names separated by a comma) of the kinase group for which the kinase families are requested (e.g. TKL,STE). (optional)
+:type kinase_group: string
+:param kinase_family: Optional: Name (or multiple names separated by a comma) of the kinase family for which the kinase names are requested (e.g. AUR,WEE). (optional)
+:type kinase_family: string
+:param species: Optional: Species for which the kinase names are requested (e.g. HUMAN OR MOUSE). (optional)
+:type species: string
+:returns: 200: An array of IDs and kinase names
+:rtype: array:#/definitions/IDlist
+:returns: default: Unexpected error
+:rtype: #/definitions/Error
+<span class="ansi-red-fg">Call docstring:</span>
+Invoke the actual HTTP request and return a future.
+
+:rtype: :class:`bravado.http_future.HTTPFuture`
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">bravado</span></code> is auto-generating classes and functions that mirror the API we were using before! How cool is that? The same query can now be done without requests.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">.</span><span class="n">Information</span><span class="o">.</span><span class="n">get_kinase_information</span><span class="p">(</span><span class="n">kinase_ID</span><span class="o">=</span><span class="p">[</span><span class="mi">22</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;bravado.http_future.HttpFuture at 0x10ce23f50&gt;
+</pre></div></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">bravado</span></code> does <em>not</em> return the response right away. It creates a <em>promise</em> that it will do so when you ask for it. This allows it to be usable in asynchronous programming, but for our purposes, it means that you need to call it with <code class="docutils literal notranslate"><span class="pre">.result()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">Information</span><span class="o">.</span><span class="n">get_kinase_information</span><span class="p">(</span><span class="n">kinase_ID</span><span class="o">=</span><span class="p">[</span><span class="mi">22</span><span class="p">])</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+KinaseInformation(HGNC='MASTL', family='MAST', full_name='microtubule associated serine/threonine kinase like', group='AGC', iuphar=0, kinase_ID=22, kinase_class='MASTL', name='MASTL', pocket='KPISRGAFGKVYLYAVKVVQVQAERDALALSKPFIVHLYYSYLVMEYLIGGDVKSLLHIYLHRHGIIHRDLKPDNMLILTDFGLS', species='Human', uniprot='Q96GX5')
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">uniprot</span>
+
+<span class="c1"># NBVAL_CHECK_OUTPUT</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+'Q96GX5'
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">bravado</span></code> also builds result <em>objects</em> for you, so you don’t have to use the <code class="docutils literal notranslate"><span class="pre">result["property"]</span></code> syntax, but the <code class="docutils literal notranslate"><span class="pre">result.property</span></code> one. Some more convenience for the end user ;)</p>
+</section>
+</section>
+<section id="Document-parsing">
+<h3 id="Document-parsing">Document parsing<a class="headerlink" href="#Document-parsing" title="Link to this heading">¶</a></h3>
+<p>Sometimes the web service will not provide a standardized API that produces machine-readable documents. Instead, you will have to use the regular webpage and parse through the HTML code to obtain the information you need. This is called (web) <strong>scraping</strong>, which usually involves finding the right HTML tags and IDs that contain the valuable data (ignoring things such as the sidebars, top menus, footers, ads, etc).</p>
+<p>In scraping, you basically do two things:</p>
+<ol class="arabic simple">
+<li><p>Access the webpage with <code class="docutils literal notranslate"><span class="pre">requests</span></code> and obtain the HTML contents.</p></li>
+<li><p>Parse the HTML string with <code class="docutils literal notranslate"><span class="pre">BeautifulSoup</span></code> or <code class="docutils literal notranslate"><span class="pre">requests-html</span></code>.</p></li>
+</ol>
+<p>Let’s parse the proteinogenic amino acids table in this <a class="reference external" href="https://en.wikipedia.org/wiki/Proteinogenic_amino_acid">Wikipedia article</a>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"https://en.wikipedia.org/wiki/Proteinogenic_amino_acid"</span>
+
+<span class="c1"># Add a User-Agent header to avoid 403 Forbidden errors when scraping.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"User-Agent"</span><span class="p">:</span> <span class="s2">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"</span>
+<span class="p">}</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error fetching page: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">. Please ensure you have a stable internet connection."</span><span class="p">)</span>
+    <span class="c1"># Exit if we cannot fetch the page</span>
+    <span class="n">exit</span><span class="p">()</span>
+
+
+<span class="c1"># To guess the correct steps here, you will have to inspect the HTML code by hand</span>
+<span class="c1"># Tip: use right-click + inspect content in any webpage to land in the HTML definition ;)</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">"html.parser"</span><span class="p">)</span>
+
+<span class="c1"># Do not rely on fragile IDs or indices.</span>
+<span class="c1"># The table is the 5th 'wikitable' on the page. We find it directly.</span>
+
+<span class="c1"># Find all tables with the class 'wikitable'</span>
+<span class="n">all_wikitables</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"table"</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">"wikitable"</span><span class="p">)</span>
+
+<span class="c1"># Select the target table (General and chemical properties) which is the 5th table (index 4)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">all_wikitables</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">"Error: Could not locate the target table (index 4). Wikipedia structure may have changed."</span>
+    <span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
+
+<span class="n">table_body</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"tbody"</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table_body</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"tr"</span><span class="p">):</span>
+    <span class="c1"># Target &lt;td&gt; and &lt;th&gt; (table data and table header) cells</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">find_all</span><span class="p">([</span><span class="s2">"td"</span><span class="p">,</span> <span class="s2">"th"</span><span class="p">])</span>
+
+    <span class="c1"># Check if the row contains actual data (skips table header rows)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"td"</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">):</span>
+        <span class="k">continue</span>
+
+    <span class="n">row_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Loop over cells, skipping the first one (often the image/name column)</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">cell_content</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="c1"># Clean up footnotes (e.g., [4], [c]) often found in Wikipedia tables</span>
+        <span class="n">cell_content</span> <span class="o">=</span> <span class="n">cell_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"["</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># convert to float if possible</span>
+            <span class="n">cell_content</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cell_content</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="c1"># If conversion fails, check for the missing value marker '?'</span>
+            <span class="k">if</span> <span class="n">cell_content</span> <span class="o">==</span> <span class="s2">"?"</span><span class="p">:</span>
+                <span class="n">cell_content</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>  <span class="c1"># Use NaN directly for immediate cleaning</span>
+            <span class="c1"># Otherwise, keep as string</span>
+            <span class="k">pass</span>
+
+        <span class="n">row_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell_content</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">row_data</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_data</span><span class="p">)</span>
+
+<span class="c1"># Empty fields were handled in the loop by setting '?' to np.nan.</span>
+<span class="c1"># Convert the list of lists into the final DataFrame.</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>A</td>
+<td>Ala</td>
+<td>2.9</td>
+<td>−1</td>
+<td>1.0</td>
+</tr>
+<tr>
+<th>1</th>
+<td>C</td>
+<td>Cys</td>
+<td>0.52</td>
+<td>11.0</td>
+<td>15.0</td>
+</tr>
+<tr>
+<th>2</th>
+<td>D</td>
+<td>Asp</td>
+<td>1.4</td>
+<td>0.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<th>3</th>
+<td>E</td>
+<td>Glu</td>
+<td>1.5</td>
+<td>−7</td>
+<td>−1</td>
+</tr>
+<tr>
+<th>4</th>
+<td>F</td>
+<td>Phe</td>
+<td>1.1</td>
+<td>−6</td>
+<td>2.0</td>
+</tr>
+<tr>
+<th>5</th>
+<td>G</td>
+<td>Gly</td>
+<td>3.5</td>
+<td>−2</td>
+<td>2.0</td>
+</tr>
+<tr>
+<th>6</th>
+<td>H</td>
+<td>His</td>
+<td>0.54</td>
+<td>1.0</td>
+<td>7.0</td>
+</tr>
+<tr>
+<th>7</th>
+<td>I</td>
+<td>Ile</td>
+<td>1.7</td>
+<td>7.0</td>
+<td>11.0</td>
+</tr>
+<tr>
+<th>8</th>
+<td>K</td>
+<td>Lys</td>
+<td>2.0</td>
+<td>5.0</td>
+<td>9.0</td>
+</tr>
+<tr>
+<th>9</th>
+<td>L</td>
+<td>Leu</td>
+<td>2.6</td>
+<td>−9</td>
+<td>1.0</td>
+</tr>
+<tr>
+<th>10</th>
+<td>M</td>
+<td>Met</td>
+<td>0.88</td>
+<td>21.0</td>
+<td>23.0</td>
+</tr>
+<tr>
+<th>11</th>
+<td>N</td>
+<td>Asn</td>
+<td>1.4</td>
+<td>3.0</td>
+<td>5.0</td>
+</tr>
+<tr>
+<th>12</th>
+<td>O</td>
+<td>Pyl</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<th>13</th>
+<td>P</td>
+<td>Pro</td>
+<td>1.3</td>
+<td>−2</td>
+<td>4.0</td>
+</tr>
+<tr>
+<th>14</th>
+<td>Q</td>
+<td>Gln</td>
+<td>1.5</td>
+<td>−6</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>15</th>
+<td>R</td>
+<td>Arg</td>
+<td>1.7</td>
+<td>5.0</td>
+<td>13.0</td>
+</tr>
+<tr>
+<th>16</th>
+<td>S</td>
+<td>Ser</td>
+<td>1.2</td>
+<td>−2</td>
+<td>2.0</td>
+</tr>
+<tr>
+<th>17</th>
+<td>T</td>
+<td>Thr</td>
+<td>1.5</td>
+<td>6.0</td>
+<td>8.0</td>
+</tr>
+<tr>
+<th>18</th>
+<td>U</td>
+<td>Sec</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<th>19</th>
+<td>V</td>
+<td>Val</td>
+<td>2.4</td>
+<td>−2</td>
+<td>2.0</td>
+</tr>
+<tr>
+<th>20</th>
+<td>W</td>
+<td>Trp</td>
+<td>0.33</td>
+<td>−7</td>
+<td>7.0</td>
+</tr>
+<tr>
+<th>21</th>
+<td>Y</td>
+<td>Tyr</td>
+<td>0.79</td>
+<td>−8</td>
+<td>2.0</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Browser-remote-control">
+<h3 id="Browser-remote-control">Browser remote control<a class="headerlink" href="#Browser-remote-control" title="Link to this heading">¶</a></h3>
+<p>The trend some years ago was to build servers that dynamically generate HTML documents with some JavaScript here and there (such as Wikipedia). In other words, the HTML is built in the server and sent to the client (your browser).</p>
+<p>However, latest trends are pointing towards full applications built entirely with JavaScript frameworks. This means that the HTML content is dynamically generated in the client. Traditional parsing will not work and you will only download the placeholder HTML code that hosts the JavaScript framework. To work around this, the HTML must be rendered with a client-side JavaScript engine.</p>
+<p>We won’t cover this in the current notebook, but you can check the following projects if you are interested:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/GoogleChrome/puppeteer">puppeteer</a></p></li>
+<li><p><a class="reference external" href="https://www.seleniumhq.org/">selenium</a></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils"/>
+<section id="Discussion">
+<h2 id="Discussion">Discussion<a class="headerlink" href="#Discussion" title="Link to this heading">¶</a></h2>
+<p>In this theoretical introduction you have seen how different methods to programmatically access online web services can be used from a Python interpreter. Leveraging these techniques you will be able to build automated pipelines inside Jupyter Notebooks. In the end, querying a database or downloading a file involves the same kind of tooling.</p>
+<p>Unfortunately, there is too much material to cover about web APIs in a single lesson. For example, how do you <em>send</em> or <em>upload</em> contents from Python? Can you submit forms? If you are interested in knowing more, the <code class="docutils literal notranslate"><span class="pre">requests</span></code> <a class="reference external" href="https://requests.readthedocs.io/">documentation</a> should be your go-to resource. Some interesting parts include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python-requests.org/en/v1.1.0/user/quickstart/#more-complicated-post-requests">Submitting forms with POST requests</a></p></li>
+<li><p><a class="reference external" href="https://docs.python-requests.org/en/v1.1.0/user/authentication/#basic-authentication">User authentication</a></p></li>
+</ul>
+</section>
+<section id="Quiz">
+<h2 id="Quiz">Quiz<a class="headerlink" href="#Quiz" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Use the KLIFS API (with or without <code class="docutils literal notranslate"><span class="pre">bravado</span></code>, up to you) to find all kinases that can bind staurosporine (ligand code <code class="docutils literal notranslate"><span class="pre">STU</span></code>).</p></li>
+<li><p>How can you find the correct HTML tags and identifiers to scrape a specific part of a website? Can it be automated?</p></li>
+<li><p>Would you rather use programmatic APIs or manually crafted scrapers?</p></li>
+</ul>
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {}, "version_major": 2, "version_minor": 0}
+</script></section>
+</section>
+
+
+          </article>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="md-footer">
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+          
+            <a href="T010_binding_site_comparison.html" title="T010 · Binding site similarity and off-target prediction"
+               class="md-flex md-footer-nav__link md-footer-nav__link--prev"
+               rel="prev">
+              <div class="md-flex__cell md-flex__cell--shrink">
+                <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+              </div>
+              <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+                <span class="md-flex__ellipsis">
+                  <span
+                      class="md-footer-nav__direction"> "Previous" </span> T010 · Binding site similarity and off-target prediction </span>
+              </div>
+            </a>
+          
+          
+            <a href="T012_query_klifs.html" title="T012 · Data acquisition from KLIFS"
+               class="md-flex md-footer-nav__link md-footer-nav__link--next"
+               rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
+                class="md-flex__ellipsis"> <span
+                class="md-footer-nav__direction"> "Next" </span> T012 · Data acquisition from KLIFS </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink"><i
+                class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          
+        </a>
+        
+      </nav>
+    </div>
+    <div class="md-footer-meta md-typeset">
+      <div class="md-footer-meta__inner md-grid">
+        <div class="md-footer-copyright">
+          <div class="md-footer-copyright__highlight">
+              &#169; Copyright 2018-2026, Volkamer Lab. Project structure based on the Computational Molecular Science Python Cookiecutter version 1.1.
+              
+          </div>
+            Created using
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+             and
+            <a href="https://github.com/bashtage/sphinx-material/">Material for
+              Sphinx</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="../_static/javascripts/application.js"></script>
+  <script>app.initialize({version: "1.0.4", url: {base: ".."}})</script>
+  </body>
+</html>
